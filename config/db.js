@@ -1,37 +1,46 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Configuración optimizada para Supabase Session Pooler
-const pool = new Pool({
-    host: process.env.DB_HOST || 'aws-0-us-east-1.pooler.supabase.com',
-    user: process.env.DB_USER || 'postgres.ifqjrycxdljbaidcgnjg',
+// Configuración optimizada para Transaction Pooler
+const config = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME || 'postgres',
-    port: parseInt(process.env.DB_PORT || '6542'),
-    ssl: { 
-        rejectUnauthorized: false 
-    },
+    database: process.env.DB_NAME,
+    port: parseInt(process.env.DB_PORT || '6543'),
+    ssl: { rejectUnauthorized: false },
     connectionTimeoutMillis: 10000,
     idleTimeoutMillis: 30000,
-    max: 10
-});
+    max: 5,  // Menos conexiones para evitar sobrecarga
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 10000
+};
 
-// Probar conexión
+const pool = new Pool(config);
+
+// Prueba con timeout más largo
 const testConnection = async () => {
+    let client;
     try {
-        const client = await pool.connect();
+        console.log('🔌 Intentando conectar a Supabase...');
+        console.log(`📡 Host: ${config.host}:${config.port}`);
+        console.log(`👤 User: ${config.user}`);
+        
+        client = await pool.connect();
+        const result = await client.query('SELECT NOW()');
         console.log('✅ Conectado a Supabase PostgreSQL');
-        console.log(`📍 Host: ${process.env.DB_HOST || 'aws-0-us-east-1.pooler.supabase.com'}`);
-        console.log(`📍 Puerto: ${process.env.DB_PORT || '6542'}`);
+        console.log(`🕒 Hora del servidor: ${result.rows[0].now}`);
         client.release();
     } catch (err) {
         console.error('❌ Error conectando a Supabase:');
         console.error(`📌 ${err.message}`);
-        console.error(`📌 Host: ${process.env.DB_HOST || 'aws-0-us-east-1.pooler.supabase.com'}`);
-        console.error(`📌 Puerto: ${process.env.DB_PORT || '6542'}`);
+        console.error(`📌 Host: ${config.host}`);
+        console.error(`📌 Puerto: ${config.port}`);
+        if (err.code) console.error(`📌 Código: ${err.code}`);
     }
 };
 
-testConnection();
+// Esperar un poco antes de probar (por si la red tarda en estabilizarse)
+setTimeout(() => testConnection(), 3000);
 
 module.exports = pool;
