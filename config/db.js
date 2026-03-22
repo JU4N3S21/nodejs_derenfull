@@ -1,28 +1,24 @@
 const { Pool } = require('pg');
-require('dotenv').config();
 
-// En Render, DATABASE_URL viene de las variables de entorno
+// Usar SOLO la variable de entorno DATABASE_URL
 const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
-    console.error('❌ DATABASE_URL no está definida');
+    console.error('❌ DATABASE_URL no está definida en las variables de entorno');
     process.exit(1);
 }
-
-console.log('🔌 Conectando a Supabase...');
 
 const pool = new Pool({
     connectionString: databaseUrl,
     ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 10000,
+    connectionTimeoutMillis: 10000
 });
 
-pool.connect((err, client, release) => {
+pool.connect((err) => {
     if (err) {
-        console.error('❌ Error:', err.message);
+        console.error('❌ Error conectando a Supabase:', err.message);
     } else {
         console.log('✅ Conectado a Supabase PostgreSQL');
-        release();
     }
 });
 
