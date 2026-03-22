@@ -1,26 +1,37 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Configurar para usar IPv4 en lugar de IPv6
+// Configuración optimizada para Supabase Session Pooler
 const pool = new Pool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
+    host: process.env.DB_HOST || 'aws-0-us-east-1.pooler.supabase.com',
+    user: process.env.DB_USER || 'postgres.ifqjrycxdljbaidcgnjg',
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT || 5432,
-    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
-    // Forzar IPv4
-    family: 4
+    database: process.env.DB_NAME || 'postgres',
+    port: parseInt(process.env.DB_PORT || '6542'),
+    ssl: { 
+        rejectUnauthorized: false 
+    },
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
+    max: 10
 });
 
 // Probar conexión
-pool.connect((err, client, release) => {
-    if (err) {
-        console.error('❌ Error conectando a Supabase:', err.message);
-    } else {
+const testConnection = async () => {
+    try {
+        const client = await pool.connect();
         console.log('✅ Conectado a Supabase PostgreSQL');
-        release();
+        console.log(`📍 Host: ${process.env.DB_HOST || 'aws-0-us-east-1.pooler.supabase.com'}`);
+        console.log(`📍 Puerto: ${process.env.DB_PORT || '6542'}`);
+        client.release();
+    } catch (err) {
+        console.error('❌ Error conectando a Supabase:');
+        console.error(`📌 ${err.message}`);
+        console.error(`📌 Host: ${process.env.DB_HOST || 'aws-0-us-east-1.pooler.supabase.com'}`);
+        console.error(`📌 Puerto: ${process.env.DB_PORT || '6542'}`);
     }
-});
+};
+
+testConnection();
 
 module.exports = pool;
