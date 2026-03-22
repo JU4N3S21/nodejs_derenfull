@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/*
+font-family: 'Oswald', sans-serif;
+font-family: 'Poppins', sans-serif;
+*/
+:root{
+    --bg:#0b0f14;          /* fondo oscuro */
+    --panel:#0f1520;       /* paneles */
+    --card:#121a26;        /* tarjetas */
+    --muted:#a6b2c0;       /* texto secundario */
+    --text:#e8eef6;        /* texto principal */
+    --accent:#00ffd1;      /* cian neón */
+    --danger:#ff4d6d;      /* eliminar */
+    --ok:#58ff9c;          /* confirmar */
+    --carrito: #2e343b;
+    --ring: 0 0 0 2px var(--accent);
+    }
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header{
+    background-color: var(--bg);
+}
+
+.header .menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px; 
+}
+
+.header .logo img{
+    width: 250px; 
+    min-width: auto;
+}
+
+.header .btn-volver{
+    padding: 10px 20px;
+    background-color: var(--muted);
+    color: var(--panel);
+    border-radius: 5px;
+}
+
+.header .btn-volver:hover{
+    background-color: var(--accent);
+}
+.container h2{
+    text-align: center;
+    font-size: 50px;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--text);
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 15px;
+}
+
+table{
+    width: 100%;
+}
+
+th , td {
+    color: var(--text);
+}
+
+.btn-1{
+    display: inline-block;
+    padding: 11px 25px;
+    background-color: var(--muted);
+    color: var(--panel);
+    border-radius: 5px;
+}
+
+.btn-1:hover{
+    background-color: var(--accent);
+}
+
+#main-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    padding: 0 200px;
+}
+
+
+
+/* Contenedor principal del carrito */
+#carrito-detalle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: var(--card);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#carrito-detalle th {
+  background-color: var(--panel);
+  color: var(--text);
+  padding: 12px;
+  text-transform: uppercase;
+}
+
+#carrito-detalle td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--muted);
+  color: var(--text);
+}
+
+#carrito-detalle img {
+  width: 80px;
+  border-radius: 8px;
+}
+
+/* Botón borrar individual */
+.borrar {
+    background-color: var(--danger);
+    border-radius: 50%;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 800;
+    cursor: pointer;
+}

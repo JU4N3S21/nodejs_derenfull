@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Inicio de Sesión</title>
+    <link rel="stylesheet" href="/css/formulariox.css">
+    <link rel="icon" href="/img/logo/logo_fondo_negro-removebg-preview.png" type="image/x-icon">
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <a href="/">
+                <img src="/img/logo/logo_fondo_negro-removebg-preview.png" alt="Logo" width="100px" height="100px">
+            </a>
+            <h2>Formulario Inicio de Sesión</h2>
+        </header>
+        <main>
+            <% if (messages && messages.error) { %>
+                <div class="flash">
+                    <p><%= messages.error %></p>
+                </div>
+            <% } %>
+            <% if (messages && messages.success) { %>
+                <div class="flash success">
+                    <p><%= messages.success %></p>
+                </div>
+            <% } %>
+
+            <form action="/login" method="POST" class="form_register">
+                <input type="email" name="email" placeholder="Ingrese correo" required autocomplete="off">
+                <br>
+                <input type="password" name="password" placeholder="Ingrese password" required autocomplete="off">
+                <br>
+                <div class="btn_accion">
+                    <button class="btn-2" type="submit">INGRESAR</button>
+                    <button class="btn-eliminar" type="reset">CANCELAR</button>
+                </div>
+                <p>¿No tienes Cuenta?  
+                    <a href="/register" id="register">Regístrate</a>
+                </p>
+            </form>
+        </main>
+        <footer>
+            &copy;Todos los derechos reservados @Juan Esteban Mayorga González
+        </footer>
+    </div>
+</body>
+</html>

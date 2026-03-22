@@ -1,0 +1,506 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/*
+font-family: 'Oswald', sans-serif;
+font-family: 'Poppins', sans-serif;
+*/
+:root{
+    --bg:#0b0f14;          /* fondo oscuro */
+    --panel:#0f1520;       /* paneles */
+    --card:#121a26;        /* tarjetas */
+    --muted:#a6b2c0;       /* texto secundario */
+    --text:#e8eef6;        /* texto principal */
+    --accent:#00ffd1;      /* cian neón */
+    --danger:#ff4d6d;      /* eliminar */
+    --ok:#58ff9c;          /* confirmar */
+    --carrito: #2e343b;
+    --ring: 0 0 0 2px var(--accent);
+    }
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+}
+
+img {
+    max-width: 100%;
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    min-height: 80vh;
+    background-color: var(--bg);
+    padding: 70px 0;
+}
+
+.menu{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo{
+    font-size: 25px;
+    color: var(--text);
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.logo img{
+    margin-top: 10px;
+    width: 200px;
+    min-width: 20vh;
+}
+
+
+.menu .navbar ul li{
+    position: relative;
+    float: left;
+}
+
+.menu .navbar ul li a{
+    font-size: 18px;
+    padding: 20px;
+    color: var(--text);
+    display: block;
+}
+
+.menu .navbar ul li a:hover{
+    color: var(--accent);
+}
+
+
+#menu {
+    display: none;
+}
+
+.menu-icono{
+    width: 25px;
+}
+
+.menu label{
+    cursor: pointer;
+    display: none;
+}
+
+.submenu{
+    position: relative;
+}
+
+.submenu #carrito{
+    display: none;
+}
+
+.submenu:hover #carrito{
+    display: block;
+    position: absolute;
+    right: 0;
+    backdrop-filter: blur(10px);
+    top: 100%;
+    z-index: 1;
+    background-color: var(--carrito);
+    padding: 20px;
+    min-width: 400px;
+}
+
+table{
+    width: 100%;
+}
+
+th , td {
+    color: var(--text);
+}
+
+.borrar {
+    background-color: var(--danger);
+    border-radius: 50%;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.header-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    padding: 0 200px;
+}
+
+.header-img{
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.header-txt{
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.header-txt h1{
+    font-size: 90px;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--text);
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 15px;
+}
+
+.header-txt p{
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.btn-1{
+    display: inline-block;
+    padding: 11px 25px;
+    background-color: var(--muted);
+    color: var(--panel);
+    border-radius: 5px;
+}
+
+.btn-1:hover{
+    background-color: var(--accent);
+}
+
+/*Fin del Header*/
+
+.ofert{
+    padding: 20px 0 0 0;
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--card);
+}
+
+.ofert-1{
+    display: flex;
+    align-items: center;
+    flex-basis: calc(33.3% - 15px);
+    background-color: var(--card);
+    padding: 35px;
+}
+
+.ofert-img{
+    flex-basis: 50%;
+    margin-right: 15px;
+    background-color: var(--card);
+}
+
+.ofert-img img{
+    width: 250px;
+    background-color: var(--card);
+}
+
+.ofert-txt{
+    flex-basis: 50%;
+    text-align: center;
+    background-color: var(--card);
+}
+
+.ofert-txt h3{
+    color: var(--text);
+    font-family: 'Oswald' , sans-serif;
+    font-size: 25px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    background-color: var(--card);
+}
+
+.btn-2{
+    display: inline-block;
+    padding: 7px 10px;
+    background-color: var(--muted);
+    color: var(--panel);
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.btn-2:hover{
+    background-color: var(--accent);
+}
+
+
+.products{
+    padding: 50px 0;
+    text-align: center;
+}
+
+.products h2{
+    color: var(--text);
+    font-family: 'Oswald' , sans-serif;
+    font-size: 50px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+}
+
+.product-content{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    background-color: var(--bg);
+}
+
+.product{
+    text-align: center;
+    padding: 30px;
+    box-shadow: 0 0 10px var(--muted);
+    background-color: var(--card);
+}
+
+.product img{
+    width: 250px;
+    height: 250px;
+    margin-bottom: 20px;
+    background-color: var(--card);
+}
+
+.product h3{
+    font-size: 20px;
+    color: var(--text);
+    background-color: var(--card);
+    font-family: 'Oswald' , sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.product p, .precio{
+    font-size: 16px;
+    color: var(--text);
+    background-color: var(--card);
+    margin-bottom: 15px;
+}
+
+.precio {
+    font-weight: 800;
+}
+
+.product-txt{
+    background-color: var(--card);
+}
+
+.icons{
+    padding: 50px 0 100px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon-1{
+    flex-basis: calc(33.3% - 30px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px;
+    background-color: var(--card);
+}
+
+.grande{
+    width: 85px;
+}
+
+.icon-txt h3{
+    font-size: 20px;
+    color: var(--text);
+    font-family: 'Oswald' , sans-serif;
+    text-transform: uppercase;
+    background-color: var(--card);
+}
+
+.icon-txt p{
+    font-size: 16px;
+    color: var(--text);
+    background-color: var(--card);
+}
+
+.icon-img{
+    background-color: var(--card);
+}
+
+.icon-img img{
+    background-color: var(--card);
+}
+
+.blog{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 100px;
+}
+
+.blog-1{
+    flex-basis: calc(33.3% - 30px);
+}
+
+.blog-1 img{
+    margin-bottom: 20px;
+}
+
+.blog-1 h3{
+    font-size: 20px;
+    color: var(--text);
+    font-family: 'Oswald' , sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.blog-1 p{
+    font-size: 16px;
+    color: var(--text);
+}
+
+.footer{
+    padding: 50px 0;
+    background-color: white;
+}
+
+.footer-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.link h3{
+    font-size: 18px;
+    color: var(--bg);
+    font-family: 'Oswald' , sans-serif;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.link a{
+    font-size: 16px;
+    color: var(--card);
+    display: block;
+    margin-bottom: 10px;
+}
+
+@media (max-width:991px){
+    .menu{
+        padding: 20px;
+    }
+
+    .menu label{
+        display: initial;
+    }
+
+    .menu .navbar{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: none;
+    }
+
+    .menu .navbar ul li{
+        width: 100%;
+    }
+
+    #menu:checked ~ .navbar{
+        display: initial;
+        background-color: var(--card);
+    }
+
+    .logo{
+        display: none;
+    }
+
+    .submenu:hover #carrito{
+        min-width: 100%;
+    }
+
+    .header{
+        min-height: 0vh;
+    }
+
+    .header-content{
+        padding: 50px 0;
+        flex-direction: column;
+    }
+
+    .header-img{
+        display: none;
+    }
+
+    .header-txt{
+        flex-basis: 100%;
+        text-align: center;
+    }
+
+    .header-txt h1{
+        font-size: 70px;
+    }
+
+    .ofert{
+        padding: 30px 30px 0 30px;
+        flex-direction: column;
+        background-color: var(--bg);
+    }
+
+    .ofert-1{
+        margin-bottom: 30px;
+    }
+
+    .products{
+        padding: 0 30px 30px 30px;
+    }
+
+    .products h2{
+        margin-bottom: 30px;
+    }
+
+    .product-content{
+        grid-template-columns: repeat(1, 1fr);
+        gap: 30px;
+    }
+
+    .icons{
+        padding: 30px;
+        flex-direction: column;
+    }
+
+    .icon-1{
+        margin-bottom: 30px;
+    }
+
+    .grande{
+        width: 70px;
+    }
+
+    .blog{
+        padding: 0 30px 30px 30px;
+        flex-direction: column;
+    }
+
+    .blog-1{
+        margin-bottom: 30px;
+    }
+
+    .footer{
+        padding: 30px;
+    }
+
+    .footer-content{
+        flex-direction: column;
+        text-align: center;
+    }
+
+}

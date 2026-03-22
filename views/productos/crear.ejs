@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto</title>
+    <link rel="stylesheet" href="/css/formulariox.css">
+    <style>
+        .form-grupo {
+            margin-bottom: 20px;
+        }
+        .form-grupo label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-grupo input, 
+        .form-grupo select, 
+        .form-grupo textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        .form-grupo textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .preview-image {
+            margin-top: 10px;
+            max-width: 200px;
+        }
+        .preview-image img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        .btn-accion {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor" style="max-width: 600px;">
+        <header>
+            <h2>Agregar Nuevo Producto</h2>
+        </header>
+        
+        <a href="/productos" class="btn-volver">← Volver a productos</a>
+
+        <% if (messages && messages.error) { %>
+            <div class="flash error" style="background: var(--danger); color: #fff; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <%= messages.error %>
+            </div>
+        <% } %>
+
+        <form method="POST" action="/productos/guardar" enctype="multipart/form-data">
+            <div class="form-grupo">
+                <label>Nombre del producto *</label>
+                <input type="text" name="nombre" required>
+            </div>
+
+            <div class="form-grupo">
+                <label>Descripción *</label>
+                <textarea name="descripcion" required></textarea>
+            </div>
+
+            <div class="form-grupo">
+                <label>Precio *</label>
+                <input type="number" name="precio" step="0.01" required>
+            </div>
+
+            <div class="form-grupo">
+                <label>Stock</label>
+                <input type="number" name="stock" value="0">
+            </div>
+
+            <div class="form-grupo">
+                <label>Categoría *</label>
+                <select name="categoria_id" required>
+                    <option value="">Seleccione una categoría</option>
+                    <% categorias.forEach(cat => { %>
+                        <option value="<%= cat.id %>"><%= cat.nombre %></option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="form-grupo">
+                <label>Imagen del producto</label>
+                <input type="file" name="imagen" accept="image/*" id="imagen-input">
+                <div class="preview-image" id="preview"></div>
+            </div>
+
+            <div class="btn-accion">
+                <button type="submit" class="btn-2">Guardar Producto</button>
+                <button type="reset" class="btn-eliminar">Limpiar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Previsualización de imagen
+        document.getElementById('imagen-input').addEventListener('change', function(e) {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '200px';
+                    img.style.borderRadius = '5px';
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    </script>
+</body>
+</html>

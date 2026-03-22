@@ -1,0 +1,222 @@
+:root{
+    --bg:#0b0f14;
+    --panel:#0f1520;
+    --card:#121a26;
+    --muted:#a6b2c0;
+    --text:#e8eef6;
+    --accent:#00ffd1;
+    --danger:#ff4d6d;
+    --ok:#58ff9c;
+    --carrito: #2e343b;
+    --ring: 0 0 0 2px var(--accent);
+}
+
+html{
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+body{
+    background-color: var(--bg);
+    margin: 0;
+    padding: 0;
+}
+
+
+.contenedor{
+    max-width: 450px;
+    background-color: var(--card);
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,.4);
+}
+
+
+header{
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 15px;
+}
+
+header h2{
+    font-weight: bold;
+    color: var(--text);
+    font-size: 20px;
+}
+
+
+.form_register{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+label{
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+input{
+    background-color: #d6dde4;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    transition: all .4s ease;
+}
+
+input:focus{
+    background-color: white;
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+
+.btn_accion{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.btn_enviar, .btn_limpiar{
+    padding: 10px;
+    width: 48%;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    transition: background .3s;
+}
+
+.btn_enviar{
+    background-color: var(--accent);
+}
+
+.btn_enviar:hover{
+    background-color: var(--accent);
+}
+
+.btn_limpiar{
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn_limpiar:hover{
+    background-color: var(--danger);
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    color: var(--text);
+    margin-top: 20px;
+}
+
+.tabla th, .tabla td {
+    padding: 12px;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+.tabla th {
+    background: #1a222e;
+}
+
+.btn-2 {
+    padding: 8px 15px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-2:hover {
+    background: #0b5ed7;
+}
+
+.btn-eliminar {
+    padding: 8px 15px;
+    background: var(--danger);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-eliminar:hover {
+    background: #ff1f45;
+}
+
+
+/*  */
+
+footer{
+    color: var(--text);
+}
+
+p{
+    color: var(--text);
+}
+
+.flash{
+    color: var(--text);
+}
+
+/*  */
+
+.form-grupo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-grupo label {
+    width: 120px;
+    font-size: 16px;
+    color: var(--text);
+}
+
+.form-grupo input {
+    width: 250px;         
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+}
+
+
+/*  */
+.btn-volver {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #666;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: 0.2s;
+}
+
+.btn-volver:hover {
+    background: var(--muted);
+}
+
+/*  */
+
+a {
+    color: var(--accent); 
+    text-decoration: none; 
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+a:hover {
+    color: var(--accent); 
+    text-shadow: 0 0 8px --accent;
+}
+
+a:visited {
+    color: var(--accent);
+}

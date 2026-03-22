@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="/css/formulariox.css">
+</head>
+<body>
+    <div class="contenedor" style="max-width:800px;">
+        <header>
+            <h2>Usuarios Registrados</h2>
+        </header>
+        <a href="/" class="btn-volver">← Volver</a>
+        <% if (session.usuario_rol === "admin") { %>
+        <a href="/usuarios/crear" class="btn-2">Agregar Usuario</a>
+        <% } %>
+
+        <% if (messages && messages.success) { %>
+            <div class="flash success"><%= messages.success %></div>
+        <% } %>
+        <% if (messages && messages.error) { %>
+            <div class="flash error"><%= messages.error %></div>
+        <% } %>
+
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% usuarios.forEach(u => { %>
+                <tr>
+                    <td><%= u.id %></td>
+                    <td><%= u.nombre %></td>
+                    <td><%= u.email %></td>
+                    <% if (session.usuario_rol === "admin") { %>
+                    <td>
+                        <a href="/usuarios/editar/<%= u.id %>" class="btn-2">Editar</a>
+                        <a href="/usuarios/eliminar/<%= u.id %>" 
+                            class="btn-eliminar"
+                            onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                            Eliminar
+                        </a>
+                    </td>
+                    <% } %>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

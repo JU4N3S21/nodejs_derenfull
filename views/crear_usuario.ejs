@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Usuario</title>
+    <link rel="stylesheet" href="/css/formulariox.css">
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <h2>Registrar Usuario</h2>
+        </header>
+        <a href="/usuarios" class="btn-volver">← Volver</a>
+        
+        <% if (messages && messages.error) { %>
+            <div class="flash error"><%= messages.error %></div>
+        <% } %>
+        
+        <form method="POST" action="/usuarios/guardar">
+            <div class="form-grupo">
+                <label>Nombre</label>
+                <input type="text" name="nombre" required>
+            </div>
+
+            <div class="form-grupo">
+                <label>Correo</label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="form-grupo">
+                <label>Contraseña</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <div class="form-grupo">
+                <label>Rol</label>
+                <select name="rol">
+                    <option value="cliente">Cliente</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-2">Guardar</button>
+            <button type="reset" class="btn-eliminar">Limpiar</button>
+        </form>
+    </div>
+</body>
+</html>

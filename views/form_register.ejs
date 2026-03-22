@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="/css/formulariox.css">
+    <link rel="icon" href="/img/logo/logo_fondo_negro-removebg-preview.png">
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <a href="/">
+                <img src="/img/logo/logo_fondo_negro-removebg-preview.png" width="100">
+            </a>
+            <h2>Crear Cuenta</h2>
+        </header>
+
+        <main>
+            <% if (messages && messages.error) { %>
+                <div class="flash error"><%= messages.error %></div>
+            <% } %>
+
+            <form action="/register/guardar" method="POST" class="form_register">
+                <input type="text" name="nombre" placeholder="Nombre completo" required autocomplete="off">
+                <br>
+                <input type="email" name="email" placeholder="Ingresa tu correo" required autocomplete="off">
+                <br>
+                <input type="password" name="password" placeholder="Crea tu contraseña" required>
+                <br>
+                <div class="btn_accion">
+                    <button class="btn-2" type="submit">Registrarse</button>
+                    <button class="btn-eliminar" type="reset">Cancelar</button>
+                </div>
+                <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+            </form>
+        </main>
+
+        <footer>
+            &copy; Derechos reservados @Juan Esteban Mayorga
+        </footer>
+    </div>
+</body>
+</html>

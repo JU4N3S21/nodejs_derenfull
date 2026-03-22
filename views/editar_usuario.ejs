@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario</title>
+    <link rel="stylesheet" href="/css/formulariox.css">
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <h2>Editar Usuario</h2>
+        </header>
+
+        <% if (messages && messages.error) { %>
+            <div class="flash error"><%= messages.error %></div>
+        <% } %>
+
+        <form class="form_register" action="/usuarios/actualizar/<%= usuario.id %>" method="POST">
+            <p>Nombre:</p>
+            <input type="text" name="nombre" value="<%= usuario.nombre %>" required>
+
+            <p>Correo:</p>
+            <input type="email" name="email" value="<%= usuario.email %>" required>
+
+            <p>Rol:</p>
+            <select name="rol" required>
+                <option value="admin" <%= usuario.rol === 'admin' ? 'selected' : '' %>>Admin</option>
+                <option value="cliente" <%= usuario.rol === 'cliente' ? 'selected' : '' %>>Cliente</option>
+            </select>
+
+            <p>Nueva contraseña (opcional):</p>
+            <input type="password" name="password" placeholder="Déjalo vacío para no cambiarla">
+
+            <div class="btn_accion">
+                <button class="btn-2" type="submit">Actualizar</button>
+                <a href="/usuarios" class="btn-eliminar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

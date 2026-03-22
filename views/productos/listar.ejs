@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="/css/formulariox.css">
+    <style>
+        .tabla img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .btn-verde {
+            background-color: var(--ok);
+            color: #000;
+        }
+        .acciones {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .precio-tabla {
+            font-weight: bold;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor" style="max-width: 1200px;">
+        <header>
+            <h2>Gestión de Productos</h2>
+        </header>
+        
+        <a href="/" class="btn-volver">← Volver al inicio</a>
+        <a href="/productos/crear" class="btn-2" style="margin-left: 10px;">+ Agregar Producto</a>
+
+        <% if (messages && messages.success) { %>
+            <div class="flash success" style="background: var(--ok); color: #000; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <%= messages.success %>
+            </div>
+        <% } %>
+        <% if (messages && messages.error) { %>
+            <div class="flash error" style="background: var(--danger); color: #fff; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <%= messages.error %>
+            </div>
+        <% } %>
+
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% productos.forEach(p => { %>
+                <tr>
+                    <td><%= p.id %></td>
+                    <td>
+                        <% if (p.imagen) { %>
+                            <img src="<%= p.imagen %>" alt="<%= p.nombre %>">
+                        <% } else { %>
+                            <span style="color: gray;">Sin imagen</span>
+                        <% } %>
+                    </td>
+                    <td><strong><%= p.nombre %></strong></td>
+                    <td style="max-width: 200px;"><%= p.descripcion.substring(0, 50) %><%= p.descripcion.length > 50 ? '...' : '' %></td>
+                    <td class="precio-tabla">$<%= Number(p.precio).toLocaleString('es-CO') %></td>
+                    <td><%= p.stock %></td>
+                    <td><%= p.categoria_nombre || 'Sin categoría' %></td>
+                    <td class="acciones">
+                        <a href="/productos/editar/<%= p.id %>" class="btn-2">Editar</a>
+                        <a href="/productos/eliminar/<%= p.id %>" 
+                            class="btn-eliminar"
+                            onclick="return confirm('¿Seguro que deseas eliminar este producto?');">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+                <% }) %>
+                <% if (productos.length === 0) { %>
+                <tr>
+                    <td colspan="8" style="text-align: center;">No hay productos registrados</td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
