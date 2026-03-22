@@ -1,6 +1,9 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+console.log('📡 Conectando a Supabase...');
+console.log('Host:', process.env.DB_HOST);
+
 const pool = new Pool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -13,7 +16,7 @@ const pool = new Pool({
 // Probar conexión
 pool.connect((err, client, release) => {
     if (err) {
-        console.error('❌ Error conectando a la base de datos:', err.stack);
+        console.error('❌ Error conectando a Supabase:', err.stack);
     } else {
         console.log('✅ Conectado a Supabase PostgreSQL');
         release();

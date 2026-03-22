@@ -10,6 +10,9 @@ router.get('/login', (req, res) => {
 
 // Procesar login
 router.post('/login', async (req, res) => {
+    console.log('🔵 POST /login recibido');
+    console.log('Body:', req.body);
+    
     const { email, password } = req.body;
     
     try {
@@ -17,6 +20,8 @@ router.post('/login', async (req, res) => {
             'SELECT * FROM usuarios WHERE email = $1',
             [email]
         );
+        
+        console.log('Usuario encontrado:', result.rows.length > 0);
         
         if (result.rows.length === 0) {
             req.flash('error', 'El correo no existe');
@@ -26,21 +31,23 @@ router.post('/login', async (req, res) => {
         const usuario = result.rows[0];
         const validPassword = await bcrypt.compare(password, usuario.password);
         
+        console.log('Contraseña válida:', validPassword);
+        
         if (!validPassword) {
             req.flash('error', 'Contraseña incorrecta ❌');
             return res.redirect('/login');
         }
         
-        // Guardar sesión
         req.session.usuario_id = usuario.id;
         req.session.usuario_nombre = usuario.nombre;
         req.session.usuario_rol = usuario.rol;
         
+        console.log('✅ Login exitoso, redirigiendo a /');
         req.flash('success', `Bienvenido ${usuario.nombre}!`);
         res.redirect('/');
         
     } catch (error) {
-        console.error(error);
+        console.error('❌ Error en login:', error);
         req.flash('error', 'Error en el servidor');
         res.redirect('/login');
     }
