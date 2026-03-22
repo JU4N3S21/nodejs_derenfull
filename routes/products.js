@@ -39,12 +39,13 @@ const upload = multer({
 // Listar productos (solo admin)
 router.get('/productos', isAdmin, async (req, res) => {
     try {
-        const [productos] = await pool.query(`
+        const result = await pool.query(`
             SELECT p.*, c.nombre as categoria_nombre 
             FROM productos p 
             LEFT JOIN categorias c ON p.categoria_id = c.id 
             ORDER BY p.id DESC
         `);
+        const productos = result.rows;
         res.render('productos/listar', { productos, messages: req.flash() });
     } catch (error) {
         console.error(error);
@@ -56,7 +57,8 @@ router.get('/productos', isAdmin, async (req, res) => {
 // Formulario para crear producto (solo admin)
 router.get('/productos/crear', isAdmin, async (req, res) => {
     try {
-        const [categorias] = await pool.query('SELECT * FROM categorias ORDER BY nombre');
+        const result = await pool.query('SELECT * FROM categorias ORDER BY nombre');
+        const categorias = result.rows;
         res.render('productos/crear', { categorias, messages: req.flash() });
     } catch (error) {
         console.error(error);
@@ -84,7 +86,7 @@ router.post('/productos/guardar', isAdmin, upload.single('imagen'), async (req, 
     try {
         await pool.query(
             `INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, imagen) 
-             VALUES (?, ?, ?, ?, ?, ?)`,
+             VALUES ($1, $2, $3, $4, $5, $6)`,
             [nombre, descripcion, precio, stock || 0, categoria_id, imagen]
         );
         
@@ -102,20 +104,21 @@ router.get('/productos/editar/:id', isAdmin, async (req, res) => {
     const { id } = req.params;
     
     try {
-        const [productos] = await pool.query(
-            'SELECT * FROM productos WHERE id = ?',
+        const result = await pool.query(
+            'SELECT * FROM productos WHERE id = $1',
             [id]
         );
         
-        if (productos.length === 0) {
+        if (result.rows.length === 0) {
             req.flash('error', 'Producto no encontrado');
             return res.redirect('/productos');
         }
         
-        const [categorias] = await pool.query('SELECT * FROM categorias ORDER BY nombre');
+        const categoriasResult = await pool.query('SELECT * FROM categorias ORDER BY nombre');
+        const categorias = categoriasResult.rows;
         
         res.render('productos/editar', { 
-            producto: productos[0], 
+            producto: result.rows[0], 
             categorias, 
             messages: req.flash() 
         });
@@ -140,8 +143,8 @@ router.post('/productos/actualizar/:id', isAdmin, upload.single('imagen'), async
         
         await pool.query(
             `UPDATE productos 
-             SET nombre = ?, descripcion = ?, precio = ?, stock = ?, categoria_id = ?, imagen = ? 
-             WHERE id = ?`,
+             SET nombre = $1, descripcion = $2, precio = $3, stock = $4, categoria_id = $5, imagen = $6 
+             WHERE id = $7`,
             [nombre, descripcion, precio, stock || 0, categoria_id, imagen, id]
         );
         
@@ -159,7 +162,7 @@ router.get('/productos/eliminar/:id', isAdmin, async (req, res) => {
     const { id } = req.params;
     
     try {
-        await pool.query('DELETE FROM productos WHERE id = ?', [id]);
+        await pool.query('DELETE FROM productos WHERE id = $1', [id]);
         req.flash('success', 'Producto eliminado correctamente');
         res.redirect('/productos');
     } catch (error) {
@@ -174,13 +177,13 @@ router.get('/api/productos/:id', async (req, res) => {
     const { id } = req.params;
     
     try {
-        const [productos] = await pool.query(
-            'SELECT id, nombre, precio, imagen FROM productos WHERE id = ?',
+        const result = await pool.query(
+            'SELECT id, nombre, precio, imagen FROM productos WHERE id = $1',
             [id]
         );
         
-        if (productos.length > 0) {
-            res.json(productos[0]);
+        if (result.rows.length > 0) {
+            res.json(result.rows[0]);
         } else {
             res.status(404).json({ error: 'Producto no encontrado' });
         }

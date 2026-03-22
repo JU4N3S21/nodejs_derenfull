@@ -13,17 +13,17 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     
     try {
-        const [rows] = await pool.query(
-            'SELECT * FROM usuarios WHERE email = ?',
+        const result = await pool.query(
+            'SELECT * FROM usuarios WHERE email = $1',
             [email]
         );
         
-        if (rows.length === 0) {
+        if (result.rows.length === 0) {
             req.flash('error', 'El correo no existe');
             return res.redirect('/login');
         }
         
-        const usuario = rows[0];
+        const usuario = result.rows[0];
         const validPassword = await bcrypt.compare(password, usuario.password);
         
         if (!validPassword) {
@@ -59,7 +59,7 @@ router.post('/register/guardar', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         
         await pool.query(
-            'INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)',
+            'INSERT INTO usuarios (nombre, email, password, rol) VALUES ($1, $2, $3, $4)',
             [nombre, email, hashedPassword, 'cliente']
         );
         

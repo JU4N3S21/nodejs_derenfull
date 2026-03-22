@@ -7,7 +7,8 @@ const { isAdmin } = require('../middleware/auth');
 // Listar usuarios (solo admin)
 router.get('/usuarios', isAdmin, async (req, res) => {
     try {
-        const [usuarios] = await pool.query('SELECT * FROM usuarios');
+        const result = await pool.query('SELECT * FROM usuarios ORDER BY id');
+        const usuarios = result.rows;
         res.render('listar_usuarios', { usuarios, messages: req.flash() });
     } catch (error) {
         console.error(error);
@@ -29,7 +30,7 @@ router.post('/usuarios/guardar', isAdmin, async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         
         await pool.query(
-            'INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)',
+            'INSERT INTO usuarios (nombre, email, password, rol) VALUES ($1, $2, $3, $4)',
             [nombre, email, hashedPassword, rol]
         );
         
@@ -48,17 +49,17 @@ router.get('/usuarios/editar/:id', isAdmin, async (req, res) => {
     const { id } = req.params;
     
     try {
-        const [rows] = await pool.query(
-            'SELECT * FROM usuarios WHERE id = ?',
+        const result = await pool.query(
+            'SELECT * FROM usuarios WHERE id = $1',
             [id]
         );
         
-        if (rows.length === 0) {
+        if (result.rows.length === 0) {
             req.flash('error', 'Usuario no encontrado');
             return res.redirect('/usuarios');
         }
         
-        res.render('editar_usuario', { usuario: rows[0], messages: req.flash() });
+        res.render('editar_usuario', { usuario: result.rows[0], messages: req.flash() });
         
     } catch (error) {
         console.error(error);
@@ -76,14 +77,14 @@ router.post('/usuarios/actualizar/:id', isAdmin, async (req, res) => {
         if (!password || password.trim() === '') {
             // Actualizar sin cambiar contraseña
             await pool.query(
-                'UPDATE usuarios SET nombre = ?, email = ?, rol = ? WHERE id = ?',
+                'UPDATE usuarios SET nombre = $1, email = $2, rol = $3 WHERE id = $4',
                 [nombre, email, rol, id]
             );
         } else {
             // Actualizar con nueva contraseña
             const hashedPassword = await bcrypt.hash(password, 10);
             await pool.query(
-                'UPDATE usuarios SET nombre = ?, email = ?, password = ?, rol = ? WHERE id = ?',
+                'UPDATE usuarios SET nombre = $1, email = $2, password = $3, rol = $4 WHERE id = $5',
                 [nombre, email, hashedPassword, rol, id]
             );
         }
@@ -103,7 +104,7 @@ router.get('/usuarios/eliminar/:id', isAdmin, async (req, res) => {
     const { id } = req.params;
     
     try {
-        await pool.query('DELETE FROM usuarios WHERE id = ?', [id]);
+        await pool.query('DELETE FROM usuarios WHERE id = $1', [id]);
         req.flash('success', 'Usuario eliminado correctamente');
         res.redirect('/usuarios');
         
