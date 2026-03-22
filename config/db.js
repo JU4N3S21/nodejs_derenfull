@@ -1,8 +1,9 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+// Usar DATABASE_URL directamente
 if (!process.env.DATABASE_URL) {
-    console.error('❌ DATABASE_URL no está definida en las variables de entorno');
+    console.error('❌ DATABASE_URL no está definida');
     process.exit(1);
 }
 
@@ -15,11 +16,11 @@ const pool = new Pool({
 pool.connect((err, client, release) => {
     if (err) {
         console.error('❌ Error conectando a Supabase:', err.message);
-        // Muestra la URL ocultando la contraseña para depuración
-        const hiddenUrl = process.env.DATABASE_URL.replace(/:[^:@]+@/, ':****@');
-        console.error('📌 URL usada:', hiddenUrl);
+        // Oculta la contraseña en los logs
+        const safeUrl = process.env.DATABASE_URL.replace(/:[^:@]+@/, ':****@');
+        console.error('📌 URL usada:', safeUrl);
     } else {
-        console.log('✅ Conectado a Supabase PostgreSQL (Transaction Pooler)');
+        console.log('✅ Conectado a Supabase PostgreSQL');
         release();
     }
 });
