@@ -5,15 +5,15 @@ const pool = require('../config/db');
 
 // Mostrar formulario de login
 router.get('/login', (req, res) => {
-    res.render('form_login', { messages: req.flash() });
+    const messages = req.flash ? req.flash() : {};
+    res.render('form_login', { messages });
 });
 
 // Procesar login
 router.post('/login', async (req, res) => {
-    console.log('🔵 POST /login recibido');
-    console.log('Body:', req.body);
-    
     const { email, password } = req.body;
+    
+    console.log('🔵 POST /login recibido');
     
     try {
         const result = await pool.query(
@@ -21,41 +21,49 @@ router.post('/login', async (req, res) => {
             [email]
         );
         
-        console.log('Usuario encontrado:', result.rows.length > 0);
-        
         if (result.rows.length === 0) {
-            req.flash('error', 'El correo no existe');
+            if (req.flash) req.flash('error', 'El correo no existe');
             return res.redirect('/login');
         }
         
         const usuario = result.rows[0];
         const validPassword = await bcrypt.compare(password, usuario.password);
         
-        console.log('Contraseña válida:', validPassword);
-        
         if (!validPassword) {
-            req.flash('error', 'Contraseña incorrecta ❌');
+            if (req.flash) req.flash('error', 'Contraseña incorrecta ❌');
             return res.redirect('/login');
         }
         
+        // Guardar sesión
         req.session.usuario_id = usuario.id;
         req.session.usuario_nombre = usuario.nombre;
         req.session.usuario_rol = usuario.rol;
         
-        console.log('✅ Login exitoso, redirigiendo a /');
-        req.flash('success', `Bienvenido ${usuario.nombre}!`);
-        res.redirect('/');
+        console.log('✅ Login exitoso:', usuario.email);
+        
+        // Guardar sesión explícitamente
+        req.session.save((err) => {
+            if (err) {
+                console.error('❌ Error guardando sesión:', err);
+                if (req.flash) req.flash('error', 'Error al iniciar sesión');
+                return res.redirect('/login');
+            }
+            
+            if (req.flash) req.flash('success', `Bienvenido ${usuario.nombre}!`);
+            res.redirect('/');
+        });
         
     } catch (error) {
         console.error('❌ Error en login:', error);
-        req.flash('error', 'Error en el servidor');
+        if (req.flash) req.flash('error', 'Error en el servidor');
         res.redirect('/login');
     }
 });
 
 // Mostrar formulario de registro
 router.get('/register', (req, res) => {
-    res.render('form_register', { messages: req.flash() });
+    const messages = req.flash ? req.flash() : {};
+    res.render('form_register', { messages });
 });
 
 // Procesar registro
@@ -70,21 +78,31 @@ router.post('/register/guardar', async (req, res) => {
             [nombre, email, hashedPassword, 'cliente']
         );
         
-        req.flash('success', 'Registro exitoso, Ahora puedes iniciar sesión ✔');
+        if (req.flash) req.flash('success', 'Registro exitoso, Ahora puedes iniciar sesión ✔');
         res.redirect('/login');
         
     } catch (error) {
-        console.error(error);
-        req.flash('error', 'Error al registrar usuario');
+        console.error('❌ Error en registro:', error);
+        if (req.flash) req.flash('error', 'Error al registrar usuario');
         res.redirect('/register');
     }
 });
 
 // Cerrar sesión
 router.get('/logout', (req, res) => {
-    req.session.destroy();
-    req.flash('success', 'Sesión cerrada correctamente');
-    res.redirect('/login');
+    console.log('🔵 GET /logout recibido');
+    
+    if (!req.session) {
+        return res.redirect('/login');
+    }
+    
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('❌ Error al cerrar sesión:', err);
+        }
+        console.log('✅ Sesión cerrada correctamente');
+        res.redirect('/login');
+    });
 });
 
 module.exports = router;
