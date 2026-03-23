@@ -14,7 +14,6 @@ const pool = new Pool({
     connectionString: databaseUrl,
     ssl: { rejectUnauthorized: false },
     connectionTimeoutMillis: 10000,
-    // Forzar IPv4
     family: 4
 });
 
